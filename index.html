@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bird Detection Video</title>
+    <style>
+        /* Body styling */
+        body { 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background-color: #f0f4f8; /* Soft blue-gray background */
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Title styling */
+        h1 { 
+            font-size: 2em; 
+            color: #1a73e8; /* Bright blue color for the title */
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+        }
+
+        /* Video container styling */
+        .video-container { 
+            position: relative; 
+            width: 640px; 
+            background-color: #000; /* Black background behind video */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+        }
+
+        /* Overlay styling */
+        .overlay { 
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            color: #ffffff; /* White text */
+            font-size: 18px; 
+            background: rgba(0, 0, 0, 0.6); /* Darker transparent background */
+            padding: 5px 10px; 
+            border-radius: 4px; 
+        }
+
+        /* Blue box styling */
+        .blue-box { 
+            position: absolute; 
+            border: 2px solid #4285f4; /* Blue border */
+            border-radius: 4px;
+        }
+
+        /* Button styling */
+        .controls button { 
+            padding: 10px 20px; 
+            font-size: 1em; 
+            margin: 10px 5px;
+            background-color: #1a73e8; /* Same blue as title */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .controls button:hover { 
+            background-color: #1558b0; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Black and White Moving Bird Detection</h1>
+
+    <div class="video-container" id="video-container">
+        <video id="video" controls>
+            <source src="https://github.com/Inglauraarteagarojas/conteoavesv2/blob/main/VIDEO-2023-12-18-10-08-02.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="overlay" id="bird-count">Moving birds detected: Black: 0, White: 0</div>
+    </div>
+
+    <div class="controls">
+        <button onclick="playVideo()">Play</button>
+        <button onclick="pauseVideo()">Pause</button>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const birdCountDisplay = document.getElementById('bird-count');
+        const videoContainer = document.getElementById('video-container');
+
+        function playVideo() { video.play(); }
+        function pauseVideo() { video.pause(); }
+
+        // Simulate bird detection with blue rectangles
+        video.addEventListener('timeupdate', () => {
+            // Clear existing boxes
+            const existingBoxes = document.querySelectorAll('.blue-box');
+            existingBoxes.forEach(box => box.remove());
+
+            // Simulate counts and positions for black and white birds
+            const simulatedBlackBirdCount = Math.floor(Math.random() * 5);
+            const simulatedWhiteBirdCount = Math.floor(Math.random() * 5);
+
+            // Update bird count display
+            birdCountDisplay.textContent = `Moving birds detected: Black: ${simulatedBlackBirdCount}, White: ${simulatedWhiteBirdCount}`;
+
+            // Randomly place blue boxes around "detected" birds
+            for (let i = 0; i < simulatedBlackBirdCount + simulatedWhiteBirdCount; i++) {
+                const box = document.createElement('div');
+                box.classList.add('blue-box');
+                box.style.width = `${Math.random() * 50 + 30}px`;  // Random width between 30-80px
+                box.style.height = `${Math.random() * 50 + 30}px`; // Random height between 30-80px
+                box.style.top = `${Math.random() * (video.clientHeight - 80)}px`;  // Random position within video bounds
+                box.style.left = `${Math.random() * (video.clientWidth - 80)}px`;
+                videoContainer.appendChild(box);
+            }
+        });
+    </script>
+
+</body>
+</html>
